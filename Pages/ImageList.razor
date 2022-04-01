@@ -1,0 +1,33 @@
+@page "/images"
+@inject ImageService _imageService
+
+<div class="container">
+
+    <div class="row row-cols-3">
+        @foreach (var image in images)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    <img class="card-img-top h-75" src="@image">
+                    <div class="card-body">
+                        <span class="card-title">@image</span>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+@code {
+    List<string> images = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await foreach (var image in _imageService.List())
+        {
+            images.Add(image);
+            this.StateHasChanged();
+        }
+    }
+}

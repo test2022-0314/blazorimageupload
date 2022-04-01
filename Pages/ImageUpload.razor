@@ -1,0 +1,20 @@
+@page "/imageupload"
+@inject ImageService _imageService
+<form @onsubmit="Submit">
+    <InputFile OnChange="@OnChange" />
+    <input type="submit">
+</form>
+
+@code {
+    private IBrowserFile _file;
+    private async Task OnChange(InputFileChangeEventArgs e)
+    {
+        // await client.UploadBlobAsync("test.jpg", e.File.OpenReadStream());
+        // Console.WriteLine("done: " + e.File.Name);
+        _file = e.File;
+    }
+    private async Task Submit() {
+        long maxAllowedSize = 20 * 1024 * 1014; // 20MiB
+        await _imageService.Upload(_file.Name, _file.OpenReadStream(maxAllowedSize));
+    }
+}
